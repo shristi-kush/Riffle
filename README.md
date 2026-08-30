@@ -41,20 +41,20 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for detailed pipeline diagrams
 
 ## Stack
 
-| Layer | Technology |
-|-------|------------|
-| API | FastAPI + Uvicorn (`app.py`) |
-| UI | Vite + React + TypeScript + Tailwind (`web/`), Outfit + IBM Plex Mono |
-| LLM | Ollama (OpenAI-compatible), default `qwen2.5:3b` |
-| Embeddings | `BAAI/bge-small-en-v1.5` (sentence-transformers) |
-| Chunking | Semantic chunking (fallback: recursive) |
-| Retrieval | Hybrid BM25 + Chroma dense via `EnsembleRetriever` |
-| Reranking | Cross-encoder `ms-marco-MiniLM-L-6-v2` |
-| Agent | LangGraph tool-calling agent |
-| Tools | document search, calculator, SQL metadata, web search (Tavily) |
-| Voice | faster-whisper (STT) + Piper (TTS) |
-| Evaluation | RAGAS (local judge) + optional LangSmith |
-| Deploy | Docker Compose (API + Ollama; React UI served by FastAPI) |
+| Layer      | Technology                                                            |
+| ---------- | --------------------------------------------------------------------- |
+| API        | FastAPI + Uvicorn (`app.py`)                                          |
+| UI         | Vite + React + TypeScript + Tailwind (`web/`), Outfit + IBM Plex Mono |
+| LLM        | Ollama (OpenAI-compatible), default `qwen2.5:3b`                      |
+| Embeddings | `BAAI/bge-small-en-v1.5` (sentence-transformers)                      |
+| Chunking   | Semantic chunking (fallback: recursive)                               |
+| Retrieval  | Hybrid BM25 + Chroma dense via `EnsembleRetriever`                    |
+| Reranking  | Cross-encoder `ms-marco-MiniLM-L-6-v2`                                |
+| Agent      | LangGraph tool-calling agent                                          |
+| Tools      | document search, calculator, SQL metadata, web search (Tavily)        |
+| Voice      | faster-whisper (STT) + Piper (TTS)                                    |
+| Evaluation | RAGAS (local judge) + optional LangSmith                              |
+| Deploy     | Docker Compose (API + Ollama; React UI served by FastAPI)             |
 
 ## Setup
 
@@ -115,14 +115,14 @@ uvicorn app:app --host 0.0.0.0 --port 5000
 
 Interactive docs at http://localhost:5000/docs.
 
-| Method | Path | Body |
-|--------|------|------|
-| GET | `/health` | - |
-| GET | `/corpus` | - |
-| POST | `/reset` | - |
-| POST | `/ingest` | multipart field `file` (PDF) |
-| POST | `/chat` | JSON `{ "message": "..." }` |
-| POST | `/voice-chat` | multipart field `file` (audio) |
+| Method | Path          | Body                           |
+| ------ | ------------- | ------------------------------ |
+| GET    | `/health`     | -                              |
+| GET    | `/corpus`     | -                              |
+| POST   | `/reset`      | -                              |
+| POST   | `/ingest`     | multipart field `file` (PDF)   |
+| POST   | `/chat`       | JSON `{ "message": "..." }`    |
+| POST   | `/voice-chat` | multipart field `file` (audio) |
 
 `/chat` and `/voice-chat` always return how the answer was reached (what the
 workspace panels render):
@@ -131,16 +131,20 @@ workspace panels render):
 {
   "answer": "...",
   "sources": [
-    { "title": "report.pdf", "location": "page 4",
-      "snippet": "...", "score": 6.49 }      // cross-encoder rerank score
+    {
+      "title": "report.pdf",
+      "location": "page 4",
+      "snippet": "...",
+      "score": 6.49,
+    }, // cross-encoder rerank score
   ],
-  "tool_path": ["search_documents", "calculator"],  // tools the agent called
+  "tool_path": ["search_documents", "calculator"], // tools the agent called
   "metrics": {
-    "grounded": true,        // document search ran and returned passages
+    "grounded": true, // document search ran and returned passages
     "sources_used": 4,
-    "confidence": "High",    // heuristic from the top rerank score
-    "latency_s": 1.32
-  }
+    "confidence": "High", // heuristic from the top rerank score
+    "latency_s": 1.32,
+  },
 }
 ```
 
@@ -174,31 +178,21 @@ on the same held-out questions (no LLM). Results: [docs/eval_results.md](docs/ev
 
 Latest held-out RAGAS (`qwen2.5:3b` generator + judge, 20 items):
 
-| Metric | Score (0–1) |
-|--------|-------------|
-| faithfulness | 0.688 |
-| answer_relevancy | 0.675 |
-| context_precision | 0.729 |
-| context_recall | 0.750 |
+| Metric            | Score (0–1) |
+| ----------------- | ----------- |
+| faithfulness      | 0.688       |
+| answer_relevancy  | 0.675       |
+| context_precision | 0.729       |
+| context_recall    | 0.750       |
 
 Latest retrieval ablation (16 answerable held-out questions):
 
-| Setup | Top-1 hit | Top-4 source recall |
-|--------|----------:|---------------------:|
-| BM25 only | 0.562 | 0.938 |
-| Dense only | 0.875 | 1.000 |
-| Hybrid (no rerank) | 0.688 | 1.000 |
-| Hybrid + rerank | 0.875 | 1.000 |
-
-## Agentic demo
-
-```bash
-python scripts/demo_agentic_query.py
-```
-
-Ingests the sample documents, then asks *"How many documents have been ingested,
-and what is 15% of that number?"* - which forces the agent to chain the
-`sql_metadata_query` and `calculator` tools.
+| Setup              | Top-1 hit | Top-4 source recall |
+| ------------------ | --------: | ------------------: |
+| BM25 only          |     0.562 |               0.938 |
+| Dense only         |     0.875 |               1.000 |
+| Hybrid (no rerank) |     0.688 |               1.000 |
+| Hybrid + rerank    |     0.875 |               1.000 |
 
 ## Optional: web search
 
@@ -228,26 +222,14 @@ First start pulls `qwen2.5:3b` via the `ollama-init` service (can take several
 minutes). Piper voices and Whisper/embedding models are cached in the mounted
 `./data` and `hf_cache` volumes.
 
-| Service | URL |
-|---------|-----|
-| React UI + FastAPI | http://localhost:5000 |
-| Ollama | http://localhost:11434 |
+| Service            | URL                    |
+| ------------------ | ---------------------- |
+| React UI + FastAPI | http://localhost:5000  |
+| Ollama             | http://localhost:11434 |
 
 ```bash
 docker compose down
 ```
-
-## Recording a demo (manual)
-
-The voice/agent flows make a great short demo video/GIF. Suggested script:
-
-1. Upload a PDF, ask a text question, show the grounded answer plus the
-   **Retrieved Sources** scores and **Response Status**.
-2. Click the mic, record a spoken question, play the spoken answer.
-3. Ask something that chains tools and point at the **Graph Reasoning Path**;
-   or run `python scripts/demo_agentic_query.py` in a terminal.
-
-Capture with any screen recorder (e.g. OBS, ScreenToGif) - this step is manual.
 
 ## Project layout
 
