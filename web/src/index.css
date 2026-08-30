@@ -1,0 +1,108 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: #0a0e17;
+  color: #f5f7fa;
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  /* Ambient gradient backdrop used by both landing and workspace shells. */
+  .app-bg {
+    background:
+      radial-gradient(ellipse 60% 45% at 12% 0%, rgba(50, 198, 240, 0.1) 0%, transparent 60%),
+      radial-gradient(ellipse 55% 45% at 88% 8%, rgba(155, 109, 240, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 50% at 50% 100%, rgba(91, 99, 232, 0.1) 0%, transparent 65%),
+      #0a0e17;
+    background-attachment: fixed;
+  }
+
+  .glass {
+    background: rgba(20, 26, 36, 0.72);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .surface {
+    background: #141a24;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .gradient-text {
+    background-image: linear-gradient(135deg, #32c6f0 0%, #6d7cf0 50%, #9b6df0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .gradient-border {
+    border: 1px solid transparent;
+    background:
+      linear-gradient(#141a24, #141a24) padding-box,
+      linear-gradient(135deg, rgba(50, 198, 240, 0.55), rgba(155, 109, 240, 0.4)) border-box;
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-signature px-5 py-2.5 text-small font-semibold text-base-1 transition hover:shadow-glow-cyan;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-5 py-2.5 text-small font-semibold text-text-high transition hover:border-white/20 hover:bg-white/[0.06];
+  }
+}
+
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(142, 147, 240, 0.35) transparent;
+}
+.scroll-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: rgba(142, 147, 240, 0.3);
+  border-radius: 999px;
+}
+.scroll-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(142, 147, 240, 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

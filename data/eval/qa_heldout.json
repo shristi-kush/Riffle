@@ -1,0 +1,122 @@
+[
+  {
+    "question": "If a homeowner's 400-watt GreenLeaf array underperforms in year 12, are they still covered by the performance warranty?",
+    "ground_truth": "Yes. The SunMax 400 has a 25 year performance warranty, so year 12 is still covered.",
+    "sources": ["greenleaf_solar_panel.pdf"],
+    "kind": "paraphrase"
+  },
+  {
+    "question": "What silicon architecture is used in GreenLeaf's 400-watt residential module?",
+    "ground_truth": "The SunMax 400 uses monocrystalline silicon cells.",
+    "sources": ["greenleaf_solar_panel.pdf"],
+    "kind": "paraphrase"
+  },
+  {
+    "question": "How heavy is GreenLeaf's 400-watt residential module?",
+    "ground_truth": "The SunMax 400 weighs 21 kilograms.",
+    "sources": ["greenleaf_solar_panel.pdf"],
+    "kind": "paraphrase"
+  },
+  {
+    "question": "How much stored energy can a homeowner actually use from GreenLeaf's 10 kilowatt-hour-class battery?",
+    "ground_truth": "The PowerCell 10 has a usable capacity of 9.2 kilowatt-hours.",
+    "sources": ["greenleaf_battery.pdf"],
+    "kind": "paraphrase"
+  },
+  {
+    "question": "Where does GreenLeaf Energy run its global headquarters?",
+    "ground_truth": "GreenLeaf Energy is headquartered in Austin, Texas.",
+    "sources": ["greenleaf_company.pdf"],
+    "kind": "paraphrase"
+  },
+  {
+    "question": "How large was GreenLeaf's workforce in the most recently reported year?",
+    "ground_truth": "GreenLeaf Energy employed 320 people as of 2024.",
+    "sources": ["greenleaf_company.pdf"],
+    "kind": "paraphrase"
+  },
+  {
+    "question": "What is the performance warranty on GreenLeaf's 400-watt panel?",
+    "ground_truth": "The SunMax 400 comes with a 25 year performance warranty.",
+    "sources": ["greenleaf_solar_panel.pdf"],
+    "kind": "distractor"
+  },
+  {
+    "question": "What battery chemistry does the PowerCell 10 use?",
+    "ground_truth": "The PowerCell 10 uses lithium iron phosphate (LiFePO4) chemistry.",
+    "sources": ["greenleaf_battery.pdf"],
+    "kind": "distractor"
+  },
+  {
+    "question": "How long is the warranty on GreenLeaf's 10 kilowatt-hour home battery?",
+    "ground_truth": "The PowerCell 10 comes with a 10 year warranty.",
+    "sources": ["greenleaf_battery.pdf"],
+    "kind": "distractor"
+  },
+  {
+    "question": "What was GreenLeaf Energy's annual revenue in 2024?",
+    "ground_truth": "GreenLeaf Energy reported annual revenue of 85 million US dollars in 2024.",
+    "sources": ["greenleaf_company.pdf"],
+    "kind": "distractor"
+  },
+  {
+    "question": "Which GreenLeaf solar panel is the PowerCell 10 meant to pair with?",
+    "ground_truth": "The PowerCell 10 is compatible with the SunMax 400 solar panel.",
+    "sources": ["greenleaf_battery.pdf"],
+    "kind": "distractor"
+  },
+  {
+    "question": "What chemistry does the PowerCell 15 use?",
+    "ground_truth": "The PowerCell 15 uses nickel manganese cobalt (NMC) chemistry.",
+    "sources": ["greenleaf_powercell_15.pdf"],
+    "kind": "distractor"
+  },
+  {
+    "question": "Which product has the longer warranty: the SunMax 400 panel or the PowerCell 10 battery?",
+    "ground_truth": "The SunMax 400 warranty is longer: 25 years versus 10 years on the PowerCell 10.",
+    "sources": ["greenleaf_solar_panel.pdf", "greenleaf_battery.pdf"],
+    "kind": "multi_hop"
+  },
+  {
+    "question": "Is the SunMax 370 performance warranty shorter than the SunMax 400 warranty?",
+    "ground_truth": "Yes. The SunMax 370 has a 20 year performance warranty and the SunMax 400 has a 25 year performance warranty.",
+    "sources": ["greenleaf_solar_panel.pdf", "greenleaf_sunmax_370.pdf"],
+    "kind": "multi_hop"
+  },
+  {
+    "question": "Which GreenLeaf battery is designed to pair with the SunMax 400 for whole-home backup?",
+    "ground_truth": "The SunMax 400 is designed to pair with the PowerCell 10.",
+    "sources": ["greenleaf_solar_panel.pdf"],
+    "kind": "multi_hop"
+  },
+  {
+    "question": "Does GreenLeaf's 2024 headcount exceed its 2023 headcount, and by how many people?",
+    "ground_truth": "Yes. Headcount rose from 280 people in 2023 to 320 people in 2024, an increase of 40.",
+    "sources": ["greenleaf_company.pdf"],
+    "kind": "multi_hop"
+  },
+  {
+    "question": "What is the retail price of the SunMax 400 in euros?",
+    "ground_truth": "The documents do not state a price for the SunMax 400.",
+    "sources": [],
+    "kind": "unanswerable"
+  },
+  {
+    "question": "Who is the CEO of GreenLeaf Energy?",
+    "ground_truth": "The documents do not name GreenLeaf Energy's CEO.",
+    "sources": [],
+    "kind": "unanswerable"
+  },
+  {
+    "question": "How many SunMax 400 panels did GreenLeaf ship in 2024?",
+    "ground_truth": "The documents do not report how many SunMax 400 panels were shipped.",
+    "sources": [],
+    "kind": "unanswerable"
+  },
+  {
+    "question": "What is GreenLeaf's installer certification number in Germany?",
+    "ground_truth": "The documents do not list an installer certification number.",
+    "sources": [],
+    "kind": "unanswerable"
+  }
+]
