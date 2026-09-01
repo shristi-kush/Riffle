@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { BrandMark, ChatIcon, CodeIcon, DatabaseIcon, GraphIcon, SettingsIcon } from "../icons";
 
@@ -23,7 +24,7 @@ function RailButton({
   label: string;
   active?: boolean;
   onClick?: () => void;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <button
