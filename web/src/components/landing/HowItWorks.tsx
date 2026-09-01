@@ -1,7 +1,12 @@
 import { CheckCircleIcon, DatabaseIcon, GraphIcon, MicIcon } from "../icons";
 import Waveform from "../Waveform";
 
-const STEPS = [
+const STEPS: {
+  icon: typeof MicIcon;
+  title: string;
+  body: string;
+  accent?: boolean;
+}[] = [
   {
     icon: MicIcon,
     title: "Voice Input",

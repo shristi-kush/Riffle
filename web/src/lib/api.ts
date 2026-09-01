@@ -41,9 +41,38 @@ interface RawAnswer {
   metrics: RawMetrics;
 }
 
+interface RawVoiceChatResponse extends RawAnswer {
+  transcript: string;
+  audio_base64: string;
+}
+
+interface RawCorpusDocument {
+  filename: string;
+  pages: number;
+  chunks: number;
+  ingested_at: string;
+}
+
+interface RawCorpusResponse {
+  loaded: boolean;
+  documents: RawCorpusDocument[];
+}
+
+interface HealthResponse {
+  status: string;
+}
+
+interface FastApiErrorBody {
+  detail?: unknown;
+}
+
+async function parseJson<T>(res: Response): Promise<T> {
+  return (await res.json()) as T;
+}
+
 async function readError(res: Response): Promise<string> {
   try {
-    const data = await res.json();
+    const data = await parseJson<FastApiErrorBody>(res);
     if (data && typeof data.detail === "string") return data.detail;
     return JSON.stringify(data);
   } catch {
@@ -69,8 +98,8 @@ export async function checkHealth(signal?: AbortSignal): Promise<boolean> {
   try {
     const res = await fetch(url("/health"), { signal });
     if (!res.ok) return false;
-    const data = await res.json();
-    return data?.status === "ok";
+    const data = await parseJson<HealthResponse>(res);
+    return data.status === "ok";
   } catch {
     return false;
   }
@@ -81,7 +110,7 @@ export async function ingestPdf(file: File): Promise<IngestResult> {
   form.append("file", file);
   const res = await fetch(url("/ingest"), { method: "POST", body: form });
   if (!res.ok) throw new Error(await readError(res));
-  return res.json();
+  return parseJson<IngestResult>(res);
 }
 
 export interface CorpusDocument {
@@ -94,15 +123,13 @@ export interface CorpusDocument {
 export async function fetchCorpus(): Promise<CorpusDocument[]> {
   const res = await fetch(url("/corpus"));
   if (!res.ok) throw new Error(await readError(res));
-  const data = await res.json();
-  return (data.documents ?? []).map(
-    (row: { filename: string; pages: number; chunks: number; ingested_at: string }) => ({
-      filename: row.filename,
-      pages: row.pages,
-      chunks: row.chunks,
-      ingestedAt: row.ingested_at,
-    })
-  );
+  const data = await parseJson<RawCorpusResponse>(res);
+  return (data.documents ?? []).map((row) => ({
+    filename: row.filename,
+    pages: row.pages,
+    chunks: row.chunks,
+    ingestedAt: row.ingested_at,
+  }));
 }
 
 export async function resetSession(): Promise<void> {
@@ -125,7 +152,7 @@ export async function sendChat(
     body: JSON.stringify({ message, history }),
   });
   if (!res.ok) throw new Error(await readError(res));
-  return toDetail(await res.json());
+  return toDetail(await parseJson<RawAnswer>(res));
 }
 
 function base64ToBlobUrl(base64: string, mime = "audio/wav"): string {
@@ -147,7 +174,7 @@ export async function sendVoice(
   }
   const res = await fetch(url("/voice-chat"), { method: "POST", body: form });
   if (!res.ok) throw new Error(await readError(res));
-  const data = await res.json();
+  const data = await parseJson<RawVoiceChatResponse>(res);
   return {
     ...toDetail(data),
     transcript: data.transcript,
