@@ -19,7 +19,7 @@ const TOOLS = [
   {
     icon: GlobeIcon,
     name: "web_search",
-    body: "Public-web fallback. Only registered when TAVILY_API_KEY is set.",
+        body: "Live facts and a fallback when the documents miss. Runs on its own when TAVILY_API_KEY is set.",
     optional: true,
   },
 ];

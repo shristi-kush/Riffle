@@ -8,9 +8,24 @@ from __future__ import annotations
 
 from langchain_huggingface import HuggingFaceEmbeddings
 
-from src.config import BGE_QUERY_INSTRUCTION, EMBEDDING_MODEL
+from src.config import BGE_QUERY_INSTRUCTION, EMBEDDING_DEVICE, EMBEDDING_MODEL
 
 _embeddings: HuggingFaceEmbeddings | None = None
+
+
+def get_torch_device() -> str:
+    """Resolve ``auto`` to cuda when a GPU is visible, otherwise cpu."""
+    raw = (EMBEDDING_DEVICE or "auto").strip().lower()
+    if raw and raw != "auto":
+        return raw
+    try:
+        import torch
+
+        if torch.cuda.is_available():
+            return "cuda"
+    except Exception:  # noqa: BLE001
+        pass
+    return "cpu"
 
 
 def get_embeddings() -> HuggingFaceEmbeddings:
@@ -24,8 +39,9 @@ def get_embeddings() -> HuggingFaceEmbeddings:
     if _embeddings is not None:
         return _embeddings
 
+    device = get_torch_device()
     encode_kwargs = {"normalize_embeddings": True}
-    model_kwargs = {"device": "cpu"}
+    model_kwargs = {"device": device}
 
     if "bge" in EMBEDDING_MODEL.lower():
         _embeddings = HuggingFaceEmbeddings(
@@ -44,3 +60,7 @@ def get_embeddings() -> HuggingFaceEmbeddings:
             encode_kwargs=encode_kwargs,
         )
     return _embeddings
+
+
+def warmup_embeddings() -> None:
+    get_embeddings().embed_query("warmup")

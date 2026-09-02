@@ -55,4 +55,10 @@ def traced_run(name: str) -> Iterator[None]:
                 try:
                     yield
                 finally:
-                    wait_for_all_tracers()
+                    # Flush traces off the request path so LangSmith I/O does
+                    # not add to the user-visible latency.
+                    import threading
+
+                    threading.Thread(
+                        target=wait_for_all_tracers, daemon=True
+                    ).start()

@@ -9,6 +9,7 @@ from __future__ import annotations
 import gc
 import logging
 import shutil
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 try:  # LangChain 1.x moved EnsembleRetriever into langchain_classic
@@ -162,6 +163,25 @@ def get_hybrid_retriever(
     )
 
 
+def _invoke_hybrid(
+    query: str,
+    *,
+    bm25_weight: float | None = None,
+    dense_weight: float | None = None,
+) -> list[Document]:
+    """Run BM25 and dense retrieval in parallel, then fuse with weighted RRF."""
+    retriever = get_hybrid_retriever(
+        bm25_weight=bm25_weight, dense_weight=dense_weight
+    )
+    if not isinstance(retriever, EnsembleRetriever):
+        return retriever.invoke(query)
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        futures = [pool.submit(r.invoke, query) for r in retriever.retrievers]
+        doc_lists = [fut.result() for fut in futures]
+    return retriever.weighted_reciprocal_rank(doc_lists)
+
+
 def retrieve_with_scores(
     query: str,
     top_k: int | None = None,
@@ -177,9 +197,9 @@ def retrieve_with_scores(
     and scores are reported as 0.0.
     """
     k = top_k or RETRIEVER_K
-    candidates = get_hybrid_retriever(
-        bm25_weight=bm25_weight, dense_weight=dense_weight
-    ).invoke(query)
+    candidates = _invoke_hybrid(
+        query, bm25_weight=bm25_weight, dense_weight=dense_weight
+    )
 
     try:
         from src.reranker import rerank_with_scores  # local import: optional (Phase 2)

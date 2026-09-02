@@ -11,6 +11,20 @@ Private-document RAG over PDFs, upgraded from a plain text chatbot into a
 - Measured quality with RAGAS; optional LangSmith tracing.
 - Nothing leaves your machine (Ollama + local embeddings + local speech).
 
+## Screenshots
+
+Landing page and the workspace at `http://localhost:5000`.
+
+![Riffle landing — voice AI with a retrieval memory](docs/screenshots/landing-hero.png)
+
+![How it works and use cases](docs/screenshots/landing-how-it-works.png)
+
+![Empty workspace — documents, conversation, sources, and LangGraph path](docs/screenshots/workspace-empty.png)
+
+![Grounded answer on an Apple 10-K with retrieved sources and search_documents](docs/screenshots/workspace-grounded.png)
+
+![Voice follow-up with spoken answer; agent routed to web_search](docs/screenshots/workspace-voice.png)
+
 ## Architecture
 
 ```mermaid

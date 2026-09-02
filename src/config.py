@@ -18,9 +18,17 @@ LLAMA_API_KEY = os.getenv("LLAMA_API_KEY", "not-needed")
 LLAMA_MODEL = os.getenv("LLAMA_MODEL", "qwen2.5:3b")
 # Model used only for RAGAS evaluation (bigger = more reliable judging).
 EVAL_LLM_MODEL = os.getenv("EVAL_LLM_MODEL", LLAMA_MODEL)
+# Cap completion length (maps to Ollama num_predict). Shorter = faster.
+LLM_MAX_TOKENS = int(os.getenv("LLM_MAX_TOKENS", "512"))
+# Smaller context window speeds prefill a lot vs Qwen's 32k default.
+LLM_NUM_CTX = int(os.getenv("LLM_NUM_CTX", "8192"))
+# Keep the model resident in Ollama. -1 = never unload.
+LLM_KEEP_ALIVE = os.getenv("LLM_KEEP_ALIVE", "-1")
 
 # --- Embeddings --------------------------------------------------------------
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "BAAI/bge-small-en-v1.5")
+# auto | cpu | cuda. auto uses CUDA when PyTorch can see a GPU.
+EMBEDDING_DEVICE = os.getenv("EMBEDDING_DEVICE", "auto")
 # BGE models expect a query-side instruction prefix (documents get none).
 BGE_QUERY_INSTRUCTION = os.getenv(
     "BGE_QUERY_INSTRUCTION",
@@ -53,6 +61,7 @@ RERANKER_MODEL = os.getenv("RERANKER_MODEL", "cross-encoder/ms-marco-MiniLM-L-6-
 STT_MODEL_SIZE = os.getenv("STT_MODEL_SIZE", "base")
 STT_COMPUTE_TYPE = os.getenv("STT_COMPUTE_TYPE", "int8")
 STT_DEVICE = os.getenv("STT_DEVICE", "cpu")
+STT_BEAM_SIZE = int(os.getenv("STT_BEAM_SIZE", "1"))
 TTS_VOICE = os.getenv("TTS_VOICE", "en_US-lessac-medium")
 # Directory that holds the downloaded Piper .onnx voice files.
 TTS_VOICE_DIR = Path(os.getenv("TTS_VOICE_DIR", str(VOICE_DIR / "piper")))

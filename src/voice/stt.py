@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from src.config import STT_COMPUTE_TYPE, STT_DEVICE, STT_MODEL_SIZE
+from src.config import STT_BEAM_SIZE, STT_COMPUTE_TYPE, STT_DEVICE, STT_MODEL_SIZE
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +37,7 @@ def transcribe(audio_path: str | Path) -> str:
     segments, _info = model.transcribe(
         str(path),
         language="en",
-        beam_size=5,
+        beam_size=STT_BEAM_SIZE,
         vad_filter=True,
         vad_parameters={"min_silence_duration_ms": 500},
         temperature=0.0,

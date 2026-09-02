@@ -33,10 +33,11 @@ def _get_client():
 
 @tool
 def web_search(query: str) -> str:
-    """Search the public web for information not found in the documents.
+    """Search the public web for current facts or information missing from the documents.
 
-    Use this only as a fallback when the uploaded documents do not contain the
-    answer. Always prefer search_documents first.
+    Call this when the question needs live data (stock prices, news, weather,
+    today's events) or when search_documents did not contain the answer. Do not
+    claim this tool is unavailable — if you can call it, it is configured.
     """
     if not web_search_available():
         return (

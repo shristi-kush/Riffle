@@ -13,6 +13,7 @@ import logging
 from langchain_core.documents import Document
 
 from src.config import RERANK_ENABLED, RERANKER_MODEL, RETRIEVER_K
+from src.embeddings import get_torch_device
 
 logger = logging.getLogger(__name__)
 
@@ -24,8 +25,14 @@ def _get_cross_encoder():
     if _cross_encoder is None:
         from sentence_transformers import CrossEncoder
 
-        _cross_encoder = CrossEncoder(RERANKER_MODEL)
+        _cross_encoder = CrossEncoder(RERANKER_MODEL, device=get_torch_device())
     return _cross_encoder
+
+
+def warmup() -> None:
+    """Load the cross-encoder so the first query is not a cold start."""
+    if RERANK_ENABLED:
+        _get_cross_encoder()
 
 
 def rerank_with_scores(

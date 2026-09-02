@@ -23,7 +23,7 @@ from src.config import (
     VOICE_DIR,
     warn_if_tracing_misconfigured,
 )
-from src.llm import init_llm
+from src.llm import init_llm, warmup_llm
 from src.tracing import init_tracing, tracing_active
 from src.rag import (
     DocumentNotLoadedError,
@@ -50,6 +50,12 @@ def _startup() -> None:
     init_tracing()
     init_llm()
     reset_corpus()
+    _warmup()
+
+
+def _warmup() -> None:
+    """Keep the Ollama weights resident so the first chat is not a cold load."""
+    warmup_llm()
 
 
 class ChatTurn(BaseModel):
