@@ -245,7 +245,7 @@ minutes). Piper voices and Whisper/embedding models are cached in the mounted
 docker compose down
 ```
 
-## Project layout
+## Project Layout
 
 ```
 app.py                 FastAPI API (/health /corpus /reset /ingest /chat /voice-chat) + serves web/dist
