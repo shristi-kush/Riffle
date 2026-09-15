@@ -11,6 +11,10 @@ Private-document RAG over PDFs, upgraded from a plain text chatbot into a
 - Measured quality with RAGAS; optional LangSmith tracing.
 - Nothing leaves your machine (Ollama + local embeddings + local speech).
 
+## Demo
+
+[Watch the demo video](https://drive.google.com/file/d/1dzv3CY5cdJvH_6iQlCinKypoharAAdRJ/view?usp=sharing)
+
 ## Screenshots
 
 Landing page and the workspace at `http://localhost:5000`.
